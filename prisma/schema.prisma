@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ChatMessage {
+  id         String   @id @default(cuid())
+  userId     String
+  question   String
+  answer     String
+  tokensUsed Int
+  createdAt  DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("chat_messages")
+}
+
+model SubscriptionBundle {
+  id           String   @id @default(cuid())
+  userId       String
+  type         String   // Basic | Pro | Enterprise
+  maxMessages  Int?     // null represents unlimited (Enterprise)
+  usedMessages Int      @default(0)
+  price        Float
+  startDate    DateTime
+  endDate      DateTime
+  renewalDate  DateTime?
+  isActive     Boolean  @default(true)
+  autoRenew    Boolean  @default(false)
+  cancelledAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId, isActive])
+  @@index([userId, endDate])
+  @@map("subscription_bundles")
+}
+
+model UserQuota {
+  id        String   @id @default(cuid())
+  userId    String
+  month     Int      // 1-12
+  year      Int
+  usedCount Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, month, year])
+  @@map("user_quotas")
+}
+
