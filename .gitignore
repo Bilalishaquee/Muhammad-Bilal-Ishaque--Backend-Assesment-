@@ -5,11 +5,8 @@ node_modules/
 dist/
 
 # Environment variables
-.env
-.env.local
 
 # IDE
-.vscode/
 .idea/
 *.swp
 *.swo
@@ -27,3 +24,4 @@ Thumbs.db
 # Prisma
 prisma/migrations/
 
+config.bat
